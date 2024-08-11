@@ -1,0 +1,23 @@
+graph G {
+        edge [dir=none];
+        graph [splines=ortho concentrate=true];
+        "紫式部" [shape=box, regular=0, color="black", style="filled" fillcolor="white"];
+        "大弐三位" [shape=box, regular=0, color="black", style="filled" fillcolor="white"];
+        "高階成章" [shape=box, regular=0, color="black", style="filled" fillcolor="white"];
+        {spouse_紫式部_藤原宣孝 [shape=point width=0 style=invis]};
+        spouse_紫式部_藤原宣孝 -- 大弐三位
+         {rank=same; 紫式部 -- spouse_紫式部_藤原宣孝 -- 藤原宣孝};
+        {spouse_大弐三位_高階成章 [shape=point width=0 style=invis]};
+        {rank=same; 大弐三位 -- spouse_大弐三位_高階成章 -- 高階成章};
+        {children_大弐三位_高階成章 [shape=point width=0 style=invis]};
+        spouse_大弐三位_高階成章 -- children_大弐三位_高階成章
+        "高階為家" [shape=box, regular=0, color="black", style="filled" fillcolor="white"];
+        children_大弐三位_高階成章 -- 高階為家
+        children_大弐三位_高階成章 -- 高階成章の娘////藤原通宗の妻//
+        "源良宗の妻" [shape=oval, regular=0, color="black", style="filled" fillcolor="white"];
+        children_大弐三位_高階成章 -- 源良宗の妻
+        {spouse_藤原兼隆_大弐三位 [shape=point width=0 style=invis]};
+        {rank=same; 藤原兼隆 -- spouse_藤原兼隆_大弐三位 -- 大弐三位};
+        {children_藤原兼隆_大弐三位 [shape=point width=0 style=invis]};
+        spouse_藤原兼隆_大弐三位 -- children_藤原兼隆_大弐三位
+}
