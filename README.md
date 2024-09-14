@@ -157,3 +157,8 @@ Q11564313-Q106560732_mother --> 源通家
 藤原雅正 --> Q3090632-Q106255407( ):::class1
 源雅俊 --> Q95162020-Q106449878( ):::class1
 ```
+
+# javascript版 html
+
+https://qiita.com/koh_ru/items/cdc251f8e3e1d6d94159
+https://wonox.github.io/pedigree/bfs_test.html
