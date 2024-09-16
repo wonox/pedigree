@@ -9,6 +9,8 @@ const getJson = async (argument_dict) => {
       
       // class: mermaidを追加する
       const id_mermaid = document.getElementById("mermaid");
+      // mermaidのwidthを変更
+      id_mermaid.style.width =  argument_dict.distance*400 + 'px';
       const id_input_Label = document.getElementById("input_label")
       id_mermaid.classList.add("mermaid");
       console.log(humandataall['results']['bindings'].length);
