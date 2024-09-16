@@ -5,3 +5,9 @@ body {
 h1 {
     color: green;
 }
+.mermaid {
+  overflow: hidden;
+  text-align:left;
+
+}
+
