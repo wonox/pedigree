@@ -37,7 +37,7 @@ class Graph {
     }
 
     dfs(start) {
-      console.log('this.connectedList', this.connectedList);
+      // console.log('this.connectedList', this.connectedList);
       //ノードを格納するスタック
       const stack = [start];
       //訪れた順番を格納
@@ -79,8 +79,6 @@ class Graph {
         currentVertex = queue.shift();
         // 現在地点を探索済みに
         result.push(currentVertex);
-        console.log(currentVertex);
-        console.log('this.connectedList[currentVertex]:', this.connectedList[currentVertex]);
         this.connectedList[currentVertex].forEach(neighbor => {
           if (!visited[neighbor]) {
             visited[neighbor] = true;

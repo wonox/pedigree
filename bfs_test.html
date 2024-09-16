@@ -3,77 +3,78 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>How to Append HTML Code to a Div using Javascript?</title>
+    <title>How to Append HTML Code to a Div using Ja</title>
     <link href="style.css" rel="stylesheet" type="text/css" media="all">
     <script src="graph_bfs.js" type="text/javascript"></script>
     <script src="fetchasyncget.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://unpkg.com/mermaid/dist/mermaid.min.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:false});</script>
-    <style>
-.mermaid {
-  overflow: hidden;
-}
-    </style>
+    <script>
+    mermaid.initialize({startOnLoad:false});
+    // ボタンを押したら実行
+    </script>
 </head>
 
 <body>
-    <h1>GeeksforGeeks</h1>
-    <ol id="add_to_me"></ol>
-    <div id="graph"></div>
-    <!-- button onclick="addCode()">Add Stuff</button-->
+    <h1>wikidata family tree maker</h1>
+    <div>
+        Q number:<input placeholder="Enter Q number(human)" name="name" id="text_input" value="Q81731" />
+    </div>
+    <div>
+        distace:<input type="range" min="1" max="150" step="2" value="3" id="slide_bar" />
+        <span id="slide_value">2</span>
+        language:<select class="lang-select" required aria-label="select language" id="lang" style="width: 100px;">
+            <option value="ja" selected>Japanese</option>
+            <option value="en">English</option>
+        </select>
+        bfs/dfs:<select class="search-select" required aria-label="select bfs or dfs" id="search" style="width: 50px;">
+            <option value="bfs" selected>bfs</option>
+            <option value="dfs">dfs</option>
+        </select>
+    </div>
+    <p> example: Q9682: エリザベスⅡ世; Q132345: 安倍晋三; Q433133: 藤原道長; Q81731: 紫式部; Q737533: ルイ13世</p>
     <button>Add Q Number</button>
+    <h2 id="input_label"></h2>
+    <div id="mermaid"></div>
+    <ol id="add_to_me"></ol>
 
+    <div id="graph"></div>
 <script>
-        // ボタンを押したら実行
-        function addCode(q_number) {
-            //APIからJSONデータを取得する
-            // const q_number = 'Q9682'; //'Q132345'; //'Q433133'; //'Q81731';
-            // const url = 'https://query.wikidata.org/sparql?query=SELECT%20DISTINCT%20%20%3Fhuman%20%3Ffather%20%3Fmother%20%3FhumanLabel%20%3FfatherLabel%20%3FmotherLabel%20%3Fsex%0AWHERE%0A%7B%0A%7Bwd%3AQ81731%20wdt%3AP40%2a%20%3Fhuman%20.%0A%20%20%20%20%3Fhuman%20wdt%3AP31%20wd%3AQ5%20.%20%20%20%20%20%20%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP22%20%3Ffather%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP25%20%3Fmother%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP21%20%3Fsex%20.%7D%0A%7D%0AUNION%0A%7B%0Awd%3AQ81731%20wdt%3AP22%2a%20%3Fhuman%20.%0A%20%20%20%20%3Fhuman%20wdt%3AP31%20wd%3AQ5%20.%20%20%20%20%20%20%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP22%20%3Ffather%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP25%20%3Fmother%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP21%20%3Fsex%20.%7D%0A%7D%0AUNION%0A%7B%0Awd%3AQ81731%20wdt%3AP25%2a%20%3Fhuman%20.%0A%20%20%20%20%3Fhuman%20wdt%3AP31%20wd%3AQ5%20.%20%20%20%20%20%20%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP22%20%3Ffather%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP25%20%3Fmother%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP21%20%3Fsex%20.%7D%0A%20%20%7D%0A%0A%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2Cja%22%20%7D%0A%7D&format=json'; //wikidata JSON
-            // const url = 'https://query.wikidata.org/sparql?query=SELECT%20DISTINCT%20%20%3Fhuman%20%3Ffather%20%3Fmother%20%3FhumanLabel%20%3FfatherLabel%20%3FmotherLabel%20%3Fsex%0AWHERE%0A%7B%0A%7Bwd%3A' + q_number + '%20wdt%3AP40%2a%20%3Fhuman%20.%0A%20%20%20%20%3Fhuman%20wdt%3AP31%20wd%3AQ5%20.%20%20%20%20%20%20%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP22%20%3Ffather%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP25%20%3Fmother%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP21%20%3Fsex%20.%7D%0A%7D%0AUNION%0A%7B%0Awd%3AQ81731%20wdt%3AP22%2a%20%3Fhuman%20.%0A%20%20%20%20%3Fhuman%20wdt%3AP31%20wd%3AQ5%20.%20%20%20%20%20%20%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP22%20%3Ffather%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP25%20%3Fmother%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP21%20%3Fsex%20.%7D%0A%7D%0AUNION%0A%7B%0Awd%3AQ81731%20wdt%3AP25%2a%20%3Fhuman%20.%0A%20%20%20%20%3Fhuman%20wdt%3AP31%20wd%3AQ5%20.%20%20%20%20%20%20%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP22%20%3Ffather%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP25%20%3Fmother%20.%7D%0A%20%20%20%20OPTIONAL%7B%3Fhuman%20wdt%3AP21%20%3Fsex%20.%7D%0A%20%20%7D%0A%0A%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2Cja%22%20%7D%0A%7D&format=json'; //wikidata JSON
-            // const humanList = getJson(url);
-
-            const humanList = getJson(q_number);
-            // https://www.wikidata.org/wiki/Special:EntityData/Q81731.json
-            // bfs_test = graph.bfs('紫式部');
-            // document.getElementById("add_to_me").innerHTML += humanList;
-            // document.getElementById("graph").innerHTML += bfs_test.slice(0, 3);
-        }
-        //グラフ
-
-    //     if (document.getElementById("mermaid")) {
-    //     alert('no hasChild');
-    //     // 新しいHTML要素を作成
-    //     let new_element = document.createElement('div');
-    //     //付与するid名
-    //     let val="mermaid";
-    //    //id属性追加
-    //    new_element.setAttribute("class",val);
-    //  }
-
+    //操作したいHTML領域を取得
+    const input = document.querySelector("button");
+    const slidebar = document.getElementById("slide_bar"); // 距離をスライドバーで入力
+    const slidevalue = document.getElementById("slide_value");
+    const language = document.getElementById("lang");
+    const bfsdfs = document.getElementById("search");
+    // スライドバーの値を表示
+    let rangeValue=function(slidebar,slidevalue){         
+      return function(){                      
+        slidevalue.innerHTML=slidebar.value;              //3
+      }
+    }
+    slidebar.addEventListener("input",rangeValue(slidebar,slidevalue));  //4
+    input.addEventListener('click', (e) => {
+        var input_text = document.getElementById('text_input');
+        // distance = slidebar.value;
+        argument_dict = {
+            qnum: input_text.value, 
+            distance: slidebar.value, 
+            lang: language.value, 
+            bfs_or_dfs: bfsdfs.value
+        };
+        // getJson(input_text.value);
+        getJson(argument_dict);
+        });
 
 </script>
 <div>
-    <input placeholder="Enter some text" name="name" id="text_input" value="Q81731" />
+    <ul>
+        <li>source code:https://github.com/wonox/pedigree/tree/main/html</li>
+        <li>abstract: wikidata の Q番号（P5(ヒト)だったら）から、子孫、先祖をたどる。</li>
+        <li>ネットワークの幅優先探索(BFS)と深さ優先探索(DFS) を使って範囲を絞る。</li>
+        <li>markdownのmermaid記法を使って、家系図のようなものを表示する。</li>
+    </ul>
 </div>
-<p> 'Q9682'; //'Q132345'; //'Q433133'; //'Q81731';Q737533</p>
-<!-- div class="mermaid" id="mermaid"></div-->
-<div id="mermaid"></div>
-<script>
-        // const graph = new Graph;
-//操作したいHTML領域を取得
-    const input = document.querySelector("button");
-    input.addEventListener('click', (e) => {
-        var input_text = document.getElementById('text_input');
-        alert(input_text.value);
-        distance = 50;
-        // const input = document.querySelector("input");
-        addCode(input_text.value);
-      }
-    );
-
-
-</script>
 </body>
-</html>
+</htmlｃｃ
