@@ -159,6 +159,10 @@ Q11564313-Q106560732_mother --> 源通家
 ```
 
 # javascript版 html
+- https://wonox.github.io/pedigree/bfs_test.html
+  - 参考：https://qiita.com/mikakane/items/87c8f676815da4e5ac04
+  ```
+  $ git subtree push --prefix public/ . gh-pages
+  $ git push origin gh-pages:gh-pages
 
-https://qiita.com/koh_ru/items/cdc251f8e3e1d6d94159
-https://wonox.github.io/pedigree/bfs_test.html
+  ```
